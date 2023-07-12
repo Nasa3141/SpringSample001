@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"xmlns:th="http://www.thymeleaf.org">
+	
+	<head>
+		<title>トップ画面</title>
+		<link href="/css/list.css" rel="stylesheet"></link>
+		<meta charset="utf-8" />
+	</head>
+
+	<body>
+	    <h1>トップ画面</h1>
+		
+		//ユーザ名表示
+		<p>ログインに成功しました</p>
+		<p>ユーザ名:
+			<span th:text="${#authentication.principal.username}"></span>
+		さん！こんにちは！</p>
+		
+		//ログアウト機能
+		<!--<form th:action="@{/logout}" method="post">
+			<button type="submit">ログアウト</button>
+		</form>-->
+	
+	</body>
+</html>

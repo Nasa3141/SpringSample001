@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"xmlns:th="http://www.thymeleaf.org">
+	
+	<head>
+		<title>入力内容確認画面</title>
+		<link href="/css/list.css" rel="stylesheet"></link>
+		<meta charset="utf-8" />
+	</head>
+
+	<body>
+	    <h1>入力内容確認画面</h1>
+	      
+	    <form th:action="@{/user/confirm}" name="form" th:object="${form}" method="post">
+			
+			<p>以下ご入力内容を確認のうえ、「登録」ボタンを押してください。</p>
+			
+			<p>ID：<span th:text="${form.id}"></span></p>
+			<p>名前：<span th:text="${form.name}"></span></p>
+			<p>名前（ふりがな）：<span th:text="${form.kana}"></span></p>
+			<p>電話番号：<span th:text="${form.phone}"></span></p>
+			<p>メールアドレス：<span th:text="${form.email}"></span></p>
+			<p>生年月日：<span th:text="${form.birthday}"></span></p>
+			<p>パスワード：<span th:text="${form.password}"></span></p>
+			
+			<input type="submit" value="登録">
+			<input type="button" value="戻る" onclick="history.back();">
+		</form><br>
+		
+		<a th:href="@{/user/login}">ログイン画面に戻る</a>
+	</body>
+</html>
