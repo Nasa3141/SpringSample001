@@ -3,56 +3,64 @@
 	
 	<head>
 		<title>アカウント登録</title>
-		<link href="/css/list.css" rel="stylesheet"></link>
+		<link href="/list.css" rel="stylesheet"></link>
 		<meta charset="utf-8" />
 	</head>
 
 	<body>
 	    <h1>アカウント登録画面</h1>    
 	    
+	    <!--エラー表示-->
+	    <table>
+        	<tr th:if="${validationError}" th:each="error : ${validationError}">
+            <td style="color: red;" th:text="${error}"></td>
+        	</tr>
+    	</table>
+    
 	    <form th:action="@{/user/input}" name="form" th:object="${form}" method="post">
 			
-			<label>
-				<p>ID</p>
-				<input type="text" th:field="*{id}" placeholder="0001">
-			</label>
-			<!--バリデーションチェックでエラーがあった場合は、エラーメッセージを表示-->
-			<p th:if="${#fields.hasErrors('id')}" th:errors="*{id}">エラーメッセージ</p>
-
 			<label>
 				<p>名前</p>
 				<input type="text" th:field="*{name}" placeholder="山田太郎">
 			</label>
 			<!--バリデーションチェックでエラーがあった場合は、エラーメッセージを表示-->
-			<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">エラーメッセージ</p>
+			<p th:if="${validationError}" style="color: red;" th:text="${name}"></p>
 			
 			<label>
 				<p>名前（ふりがな）</p>
 				<input type="text" th:field="*{kana}" placeholder="やまだたろう">
 			</label>
-			<p th:if="${#fields.hasErrors('kana')}" th:errors="*{kana}">エラーメッセージ</p>
+			<p th:errors="*{kana}"></p>
 			
 			<label>
 				<p>電話番号</p>
 				<input type="text" th:field="*{phone}" placeholder="999-9999-9999">
 			</label>
-			<p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">エラーメッセージ</p>
+			<p th:errors="*{phone}"></p>
 
 			<label>
 				<p>メールアドレス</p>
 				<input type="text" th:field="*{email}" placeholder="sample001@gmail.com">
 			</label>
+			<p th:errors="*{email}"></p>
 
 			<label>
 				<p>生年月日</p>
 				<input type="date" th:field="*{birthday}" name="calendar" max="9999-12-31" placeholder="1992/10/02">
 			</label>
-						
+			<p th:errors="*{birthday}"></p>
+				
 			<label>
 				<p>ログインパスワード（半角英数字8文字以上）</p>
 				<input type="password" th:field="*{password}" placeholder="testpass0201">
 			</label>
-			<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">エラーメッセージ</p>
+			<p th:errors="*{password}"></p>
+			
+			<label>
+				<p>（確認用）パスワード（半角英数字8文字以上）</p>
+				<input type="password" th:field="*{confirmpass}" placeholder="testpass0201">
+			</label>
+			<p th:errors="*{confirmpass}"></p>
 			
 			<input type="submit" value="アカウント登録">
 		</form><br>

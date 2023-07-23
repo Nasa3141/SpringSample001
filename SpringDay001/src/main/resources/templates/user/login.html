@@ -13,8 +13,8 @@
 	</div>
 	
 	<!--ログインフォーム-->
-	<form th:action="@{/user/login}" method="post">
-		<p>ユーザ名：<input type="text" name="name" /></p>
+	<form th:action="@{/user/login}" th:method="post">
+		<p>メールアドレス：<input type="text" name="email" /></p>
 		<p>パスワード：<input type="password" name="password" /></p>
 		<input type="submit" value="ログイン" />
 	</form>

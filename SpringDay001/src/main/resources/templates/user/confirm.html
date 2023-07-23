@@ -3,7 +3,7 @@
 	
 	<head>
 		<title>入力内容確認画面</title>
-		<link href="/css/list.css" rel="stylesheet"></link>
+		<link href="/list.css" rel="stylesheet"></link>
 		<meta charset="utf-8" />
 	</head>
 
@@ -14,7 +14,6 @@
 			
 			<p>以下ご入力内容を確認のうえ、「登録」ボタンを押してください。</p>
 			
-			<p>ID：<span th:text="${form.id}"></span></p>
 			<p>名前：<span th:text="${form.name}"></span></p>
 			<p>名前（ふりがな）：<span th:text="${form.kana}"></span></p>
 			<p>電話番号：<span th:text="${form.phone}"></span></p>

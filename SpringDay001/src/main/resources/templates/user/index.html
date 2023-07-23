@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"xmlns:th="http://www.thymeleaf.org">
+
+	
+	<head>
+	    <title>Hello WebSocket</title>
+	    <meta charset="utf-8" />
+	    <!--<link href="/main.css" rel="stylesheet">-->
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+	    <script src="/app.js"></script>
+	</head>
+	
+	<body>
+		<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+		    enabled. Please enable
+		    Javascript and reload this page!</h2></noscript>
+		    
+	    
+		<div id="main-content" class="container">
+		    
+		    <div class="row">
+				
+				<!----------------
+				--接続・切断ボタン
+				------------------>
+		        <div class="col-md-6">
+		            <form class="form-inline">
+		                <div class="form-group">
+		                    <button id="connect" class="btn btn-default" type="submit">チャットを始める</button>
+		                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">終了する</button>
+		                </div>
+		            </form>
+		        </div>
+		        
+		       <!----------------
+				--名前・メッセージ入力欄
+				------------------>
+		        <div class="col-md-6">
+		            <form class="form-inline">
+		                <div class="form-group">
+				    		<label for="name">名前</label>
+				    		<input type="text" id="name" placeholder="名前を入力してください">
+				  		</div>
+				  		<div class="form-group">
+				    		<label for="name">メッセージ</label>
+				    		<input type="text" id="statement" placeholder="メッセージを入力してください">
+				  		</div>
+		  
+		                <button id="send" class="btn btn-default" type="submit">送信</button>
+		            </form>		            
+		            
+		            
+				<!--ファイルアップロード:
+				 「enctype="multipart/form-data"」でアップロードファイルをコントローラークラスに渡す */ -->
+				 	<form th:action="@{/user/input}" name="uploadForm" th:object="${uploadForm}" method="post" enctype="multipart/form-data">
+			            <div>
+			                <input type="file" th:field="*{multipartFile}">
+			            </div>
+			            <div>
+			                <input type="submit" value="アップロード">
+			            </div>
+			        </form>
+			                 
+		            
+		        </div>
+		    </div>
+		    
+		    <!----------------
+			--メッセージ表示
+			------------------>
+		    <div class="row">
+		        <div class="col-md-12">
+					
+					<!--メッセージ表示テーブル-->
+		            <table id="conversation" class="table table-striped">
+		                <thead>
+		                <tr>
+		                    <th>チャット履歴</th>
+		                </tr>
+		                </thead>
+		                	<tbody id="message"><!--メッセージ表示-->
+		                </tbody>
+		            </table>
+		            
+		        </div>
+		    </div>
+		    
+		    <!----------------
+			--トップ画面に戻る
+			------------------>
+			<a th:href="@{/user/top}">トップ画面へ戻る</a>
+			
+			<!--何故かフォームのリンクだけ機能しない-->
+			<!--<form th:action="@{/user/top}" method="get">
+				<button type="submit">トップ画面へ戻る</button>
+			</form>-->
+			
+			<!----------------
+			--ログアウト
+			------------------>			
+			<a th:href="@{/user/login}">ログアウト</a>
+		    
+		</div>	
+	</body>
+</html>

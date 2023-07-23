@@ -9,17 +9,20 @@
 
 	<body>
 	    <h1>トップ画面</h1>
-		
-		//ユーザ名表示
 		<p>ログインに成功しました</p>
 		<p>ユーザ名:
 			<span th:text="${#authentication.principal.username}"></span>
 		さん！こんにちは！</p>
 		
-		//ログアウト機能
-		<!--<form th:action="@{/logout}" method="post">
+		
+		<form th:action="@{/user/logout}" method="get">
 			<button type="submit">ログアウト</button>
-		</form>-->
+		</form>
+		
+		<form th:action="@{/user/index}" method="get">
+			<button type="submit">チャットをはじめる</button>
+		</form>
+		
 	
 	</body>
 </html>
