@@ -5,7 +5,6 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.example.demo.entity.Account;
 import com.example.demo.form.RegisterForm;
 import com.example.demo.repository.UserRepository;

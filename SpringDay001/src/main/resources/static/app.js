@@ -1,12 +1,30 @@
-//処理を予約する
-$(function () {
-    $("form").on('submit', (e) => e.preventDefault());
-    $( "#connect" ).click(() => connect());
-    $( "#disconnect" ).click(() => disconnect());
-    $( "#send" ).click(() => sendName());
-    //$("#img_fileData").change(() => handleFileSelect());//画像ファイル選択されたら、handleFileSelectメソッドを実行する
-    //$("mv_fileData").change(() => handleFileSelect());
-    //$("#upload_form").submit(() => fileUpload());// アップロードボタンを押下したら、fileUploadメソッドを実行する     
+$(function () {       
+    //接続ボタンクリック時
+     $("#connect").on('click', function(e) {
+		 e.preventDefault();//★これないとチャット送信できない
+          stompClient.activate();
+     });
+	
+	//切断ボタンクリック時
+     $("#disconnect").on('click', function(e) {
+          e.preventDefault();//★これないとチャット送信できない
+          stompClient.deactivate();
+          setConnected(false);
+          console.log("Disconnected");
+     });
+     
+    //送信ボタンクリック時
+     $("#send").on('click', function(e) {
+		 e.preventDefault();//★これないとチャット送信できない
+		 stompClient.publish({
+			 destination: "/send/message",
+			 body: JSON.stringify({'name': $("#name").val(), 'statement': $("#statement").val()})
+			 });
+     });
+    //画像ファイル選択時
+   	$("#img_fileData").change(() => handleFileSelect());
+   	//動画ファイル選択時
+    $("#mv_fileData").change(() => handleFileSelect()); 
 });
 
 /*********************
@@ -44,39 +62,10 @@ function setConnected(connected) {
     $("#message").html("");
 }
 
-//接続
-function connect() {
-    stompClient.activate();
-}
-
-//切断
-function disconnect() {
-    stompClient.deactivate();
-    setConnected(false);
-    console.log("Disconnected");
-}
-
-//送信
-function sendName() {
-    stompClient.publish({
-        destination: "/send/message",
-        body: JSON.stringify({'name': $("#name").val(), 'statement': $("#statement").val()})
-    });
-}
-
 //メッセージ表示
 function showMessage(message) {
     $("#message").append( "<tr><td>" + message.name + ": " + message.statement + "</td></tr>");
 }
-
-/*********************
- * ファイルアップロード
- *********************/
-//動画ファイルの要素取得　　　　★後で実装する*********************************
-//const mv_fileInput = document.getElementById('mv__fileData');
-//const mv_files = img_fileInput.files;
-//************************************************************* 
-
 
 //選択ファイル確認
 function handleFileSelect() {
@@ -84,6 +73,11 @@ function handleFileSelect() {
 	const file = document.getElementById('img_fileData');//画像ファイルの要素取得
 	const selectfiles = file.files;//ファイル一覧を取得
 
+//動画ファイルの要素取得　　　　★後で実装する*********************************
+//const mv_fileInput = document.getElementById('mv__fileData');
+//const mv_files = img_fileInput.files;
+//************************************************************* 
+	
 	//選択されたファイル一覧から、ループ処理で中身を一つずつ取り出している
 	for (let i = 0; i < selectfiles.length; i++) {
     	console.log(selectfiles[i]);　// 1つ1つのファイルデータはfiles[i]で取得できる  
@@ -97,30 +91,40 @@ function handleFileSelect() {
   	}
 }
 
-//アップロード
-/**function fileUpload() {
-	// 要素規定の動作をキャンセルする
-        event.preventDefault();
-        //const sizeLimit = 1024 * 1024 * 1;　// 制限サイズ（1MB）
-		const inputfile = document.querySelector("#img_fileData");//画像ファイルの要素取得
-		
-		// フォームデータを作成
-		const file = inputfile.files[0];
-		const formData = new FormData();
-		// imgというフィールド名でファイルを追加
-		formData.append("img", file);
-		// 送信
-		fetch("http://localhost:8080/user/index", { method: "POST", body: formData })
-			.then((res)=>{
-			        return( res.json() );
-			      })
-			      .then((json)=>{
-			        // 通信が成功した際の処理
-			      })
-			      .catch((error)=>{
-			        // エラー処理
-			      });
-}**/
+/*
+*　ファイルアップロード処理
+*
+*CSRFトークンを取得してから、送信処理を行う
+*/
+/**async function executeApi() {
+	
+    //CSRFトークンを取得
+    let csrfToken = $('input[name="_csrf"]').val();
+
+	//画像ファイルの要素取得
+	const inputfile = document.querySelector("#img_fileData");	
+	const file = inputfile.files[0];
+	// フォームデータを作成
+	const formData = new FormData();
+	formData.append("img", file);// imgというフィールド名でファイルを追加
+    
+    //以下処理の実行は、CSRFトークンを取得するまで待機する
+    let response = "";
+    await fetch("/upload", {
+        method: 'POST'
+    ,   body: formData
+    ,   headers: {
+			'X-CSRF-TOKEN': csrfToken,
+            'X-XSRF-TOKEN' : csrfToken,
+        }
+    })
+    .then(response =>  response.text())
+    .then(data => {
+        response = data;
+    });
+
+    console.log(response);
+}
 
 //無限スクロール機能
 /**document.querySelectorAll('.scroll').forEach(elm => {

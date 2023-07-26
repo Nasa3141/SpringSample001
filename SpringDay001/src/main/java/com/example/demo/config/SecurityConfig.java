@@ -38,7 +38,7 @@ public class SecurityConfig{
 	        	.failureUrl("/user/login?error")			// ログイン失敗時の遷移先 ※ログイン失敗時には"error"という文字をURLに含める　→それをHTML側で受け取りエラ表示している
 	        	.permitAll()								// ログイン画面は未ログインでもアクセス可能
 	        	);
-	        
+	    
 	    //ログアウトの設定記述開始
 	    http.logout(logout -> logout
 	        	.logoutSuccessUrl("/user/login")			//ログアウト成功後の遷移先URL   			
